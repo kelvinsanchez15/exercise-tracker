@@ -99,8 +99,8 @@ app.post("/api/exercise/add", async (req, res) => {
     res.json({
       _id: userId,
       username: result.username,
-      date: date,
-      duration: duration,
+      date: date.toDateString(),
+      duration: parseInt(duration),
       description: description,
     });
   } catch (err) {
