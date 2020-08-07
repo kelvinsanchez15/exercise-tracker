@@ -34,21 +34,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// User.create(
-//   {
-//     username: "prueba123",
-//     log: [
-//       { description: "algo", duration: 30, date: "Thu Aug 06 2020" },
-//       { description: "otra cosa", duration: 60, date: "Thu Aug 08 2020" },
-//     ],
-//   },
-//   (err, newUser) => {
-//     if (err) return console.log(err);
-//     console.log(newUser);
-//     console.log(newUser.log.length);
-//   }
-// );
-
 // Serve styles and scripts from public dir
 app.use(express.static("public"));
 
@@ -59,9 +44,9 @@ app.post("/api/exercise/new-user", async (req, res) => {
   const { username } = req.body;
 
   try {
-    // check if user exist in the database
+    // Check if the user exist in the database
     const findOne = await User.findOne({ username: username });
-    // if exist send json with message
+    // If exist send a error message
     if (findOne) return res.json({ error: "Username already taken" });
     // Else create new user and respond with json
     const newUser = await User.create({ username: username });
@@ -71,6 +56,57 @@ app.post("/api/exercise/new-user", async (req, res) => {
     res.json({ error: "Database error" });
   }
 });
+
+// POST add new exercise
+app.post("/api/exercise/add", async (req, res) => {
+  const { userId, description, duration, date } = req.body;
+  const newExercise = {
+    description: description,
+    duration: duration,
+    date: date,
+  };
+  // Check for empty input fields
+  if (!(userId && description && duration))
+    return res.json({ error: "Fill all required inputs" });
+
+  try {
+    const result = await User.findByIdAndUpdate(
+      { _id: userId },
+      { $push: { log: newExercise } },
+      { new: true, useFindAndModify: false }
+    );
+    // If the userId don't exist return error
+    if (!result)
+      return res.json({
+        error: "The userId provided don't exist in the database",
+      });
+    // Else return
+    res.json({
+      _id: userId,
+      username: result.username,
+      date: date,
+      duration: duration,
+      description: description,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/api/exercise/users", async (req, res) => {
+  try {
+    res.json(await User.find({}, "_id username"));
+  } catch (err) {
+    res.json({ error: "database error" });
+  }
+});
+
+// res.json({
+//   _id: userId,
+//   username: result.username,
+//   count: result.log.length,
+//   log: result.log,
+// });
 
 // Server listening
 const port = process.env.PORT || 3000;
