@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
   username: String,
   log: [
     {
+      _id: {
+        type: String,
+        default: shortid.generate,
+        select: false,
+      },
       description: String,
       duration: Number,
       date: Date,
@@ -43,6 +48,7 @@ const User = mongoose.model("User", userSchema);
 // Serve styles and scripts from public dir
 app.use(express.static("public"));
 
+// Main rout defined
 app.get("/", (req, res) => res.sendFile(`${__dirname}/views/index.html`));
 
 // POST add new user
@@ -117,12 +123,33 @@ app.get("/api/exercise/users", async (req, res) => {
   }
 });
 
-// res.json({
-//   _id: userId,
-//   username: result.username,
-//   count: result.log.length,
-//   log: result.log,
-// });
+// I can retrieve a full exercise log of any user by getting /api/exercise/log with a parameter of userId(_id). App will return the user object with added array log and count (total exercise count).
+// I can retrieve part of the log of any user by also passing along optional parameters of from & to or limit. (Date format yyyy-mm-dd, limit = int)
+
+// GET log from userId
+app.get("/api/exercise/log", async (req, res) => {
+  const { userId } = req.query;
+
+  // Search
+  const result = await User.findById(userId).lean();
+
+  // If the userId don't exist return error
+  if (!result)
+    return res.json({
+      error: "The userId provided don't exist in the database",
+    });
+
+  // Parse date
+  result.log.forEach((log) => (log.date = log.date.toDateString()));
+
+  // Return json
+  res.json({
+    _id: userId,
+    username: result.username,
+    count: result.log.length,
+    log: result.log,
+  });
+});
 
 // Server listening
 const port = process.env.PORT || 3000;
