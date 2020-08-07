@@ -50,7 +50,7 @@ app.post("/api/exercise/new-user", async (req, res) => {
     if (findOne) return res.json({ error: "Username already taken" });
     // Else create new user and respond with json
     const newUser = await User.create({ username: username });
-    res.json({ userId: newUser._id, username: username });
+    res.json({ username: username, _id: newUser._id });
   } catch (err) {
     console.log(err);
     res.json({ error: "Database error" });
