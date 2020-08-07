@@ -29,7 +29,13 @@ const userSchema = new mongoose.Schema({
     default: shortid.generate,
   },
   username: String,
-  log: Array,
+  log: [
+    {
+      description: String,
+      duration: Number,
+      date: Date,
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);
@@ -59,15 +65,22 @@ app.post("/api/exercise/new-user", async (req, res) => {
 
 // POST add new exercise
 app.post("/api/exercise/add", async (req, res) => {
-  const { userId, description, duration, date } = req.body;
+  const { userId, description, duration } = req.body;
+  let { date } = req.body;
+
+  // Check for empty input fields
+  if (!(userId && description && duration))
+    return res.json({ error: "Fill all required inputs" });
+
+  // Handle empty date
+  date ? (date = new Date(date)) : (date = new Date());
+
+  // Create new exercise object to push
   const newExercise = {
     description: description,
     duration: duration,
     date: date,
   };
-  // Check for empty input fields
-  if (!(userId && description && duration))
-    return res.json({ error: "Fill all required inputs" });
 
   try {
     const result = await User.findByIdAndUpdate(
@@ -75,11 +88,13 @@ app.post("/api/exercise/add", async (req, res) => {
       { $push: { log: newExercise } },
       { new: true, useFindAndModify: false }
     );
+
     // If the userId don't exist return error
     if (!result)
       return res.json({
         error: "The userId provided don't exist in the database",
       });
+
     // Else return
     res.json({
       _id: userId,
@@ -93,6 +108,7 @@ app.post("/api/exercise/add", async (req, res) => {
   }
 });
 
+// GET all users from the database
 app.get("/api/exercise/users", async (req, res) => {
   try {
     res.json(await User.find({}, "_id username"));
