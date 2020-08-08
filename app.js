@@ -128,9 +128,9 @@ app.get("/api/exercise/users", async (req, res) => {
 
 // GET log from userId
 app.get("/api/exercise/log", async (req, res) => {
-  const { userId } = req.query;
+  const { userId, from, to, limit } = req.query;
 
-  // Search
+  // Search for full log
   const result = await User.findById(userId).lean();
 
   // If the userId don't exist return error
@@ -139,7 +139,20 @@ app.get("/api/exercise/log", async (req, res) => {
       error: "The userId provided don't exist in the database",
     });
 
-  // Parse date
+  // Filter log by date range
+  if (from) {
+    const fromDate = new Date(from + "T00:00:00");
+    const toDate = to ? new Date(to + "T23:59:59") : null;
+
+    result.log = dateFilter(result.log, fromDate, toDate);
+  }
+
+  // Limit log entries
+  if (limit) {
+    result.log = result.log.slice(0, parseInt(limit));
+  }
+
+  // Parse date format
   result.log.forEach((log) => (log.date = log.date.toDateString()));
 
   // Return json
@@ -154,3 +167,17 @@ app.get("/api/exercise/log", async (req, res) => {
 // Server listening
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running at port ` + port));
+
+// Date Filter function
+const dateFilter = (arr, fromDate, toDate) => {
+  return (
+    arr
+      // Sort dates in ascending order
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      // Filter dates by range
+      .filter((e) => {
+        date = new Date(e.date);
+        return toDate ? date >= fromDate && date <= toDate : date >= fromDate;
+      })
+  );
+};
