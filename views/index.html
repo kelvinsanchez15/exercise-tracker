@@ -14,84 +14,119 @@
   <body>
     <div class="container">
       <div class="form-wrapper">
+        <h1 class="title">Exercise Tracker</h1>
         <form action="/api/exercise/new-user" method="post">
-          <h3>Create new user</h3>
-          <label for="username">*Username</label>
+          <h3>Create New User</h3>
+
+          <label for="username"
+            >Username<span class="required-mark">*</span></label
+          >
           <input
             type="text"
             name="username"
             id="username"
-            placeholder="Username"
+            placeholder="Enter a New Username"
             required="required"
           />
-          <input type="submit" value="Submit" />
+
+          <input class="submit-button" type="submit" value="Submit" />
         </form>
       </div>
 
+      <hr />
+
       <div class="form-wrapper">
-        <h3>Get complete user list</h3>
         <form action="api/exercise/users" method="get">
-          <input type="submit" value="Request" />
+          <h3>Check User List</h3>
+          <input class="submit-button" type="submit" value="Submit" />
         </form>
       </div>
+
+      <hr />
 
       <div class="form-wrapper">
         <form action="/api/exercise/add" method="post">
-          <h3>Add exercise</h3>
-          <label for="userId">*userId</label>
+          <h3>Add New Exercise</h3>
+
+          <label for="userId"
+            >User Id<span class="required-mark">*</span></label
+          >
           <input
             type="text"
             name="userId"
             id="userId"
-            placeholder="userId"
+            placeholder="Enter a User Id"
             required="required"
           />
-          <label for="description">*description</label>
+
+          <label for="description"
+            >Description<span class="required-mark">*</span></label
+          >
           <input
             type="text"
             name="description"
             id="description"
-            placeholder="description"
+            placeholder="Enter a Exercise Description"
             required="required"
           />
-          <label for="duration">*duration</label>
+
+          <label for="duration"
+            >Duration (min)<span class="required-mark">*</span></label
+          >
           <input
             type="number"
             name="duration"
             id="duration"
             min="0"
-            placeholder="duration"
+            placeholder="Enter a Exercise Duration"
             required="required"
           />
-          <label for="date">date</label>
+
+          <label for="date">Date</label>
           <input type="date" name="date" id="date" />
-          <input type="submit" value="Submit" />
+
+          <input class="submit-button" type="submit" value="Submit" />
         </form>
       </div>
+
+      <hr />
+
       <div class="form-wrapper">
         <form action="/api/exercise/log" method="get">
-          <h3>Get complete log by userId</h3>
-          <label for="userId">*userId</label>
+          <h3>Check Exercise Log</h3>
+
+          <label for="userId"
+            >User Id<span class="required-mark">*</span></label
+          >
           <input
             type="text"
             name="userId"
             id="userId"
-            placeholder="userId"
+            placeholder="Enter a User Id"
             required="required"
           />
-          <label for="fromDate">From</label>
-          <input type="date" name="from" id="fromDate" />
-          <label for="toDate">To</label>
-          <input type="date" name="to" id="toDate" />
+
+          <div class="splitter-wrapper">
+            <div class="row-wrapper">
+              <label for="fromDate">From</label>
+              <input type="date" name="from" id="fromDate" />
+            </div>
+            <div class="row-wrapper">
+              <label for="toDate">To</label>
+              <input type="date" name="to" id="toDate" />
+            </div>
+          </div>
+
           <label for="limit">Limit</label>
           <input
             type="number"
             name="limit"
             id="limit"
             min="1"
-            placeholder="limit"
+            placeholder="Enter a Entry Limit"
           />
-          <input type="submit" value="Submit" />
+
+          <input class="submit-button" type="submit" value="Submit" />
         </form>
       </div>
     </div>

@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  background-image: linear-gradient(135deg, #abdcff 20%, #ff03b096 100%);
+}
+
+.container {
+  background-color: #ffffffa1;
+  margin: 2em 0;
+  padding: 20px 0;
+  border-radius: 10px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-wrapper {
+  padding: 10px 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  padding: 0.5em;
+}
+
+input {
+  padding: 0.5em;
+}
+
+.required-mark {
+  color: red;
+  margin-left: 3px;
+}
+
+.submit-button {
+  margin-top: 1em;
+}
+
+.splitter-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 0.5em;
+  text-align: center;
+}
+
+h3 {
+  margin: 0;
+  text-align: center;
+}
+
+hr {
+  border: 1px solid #dbd9d9;
+  width: 100%;
+}
