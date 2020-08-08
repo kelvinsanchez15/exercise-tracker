@@ -6,6 +6,9 @@ const User = require("../models/user");
 router.post("/new-user", async (req, res) => {
   const { username } = req.body;
 
+  // Check for empty input field
+  if (!username) return res.json({ error: "Fill all required inputs" });
+
   try {
     // Check if the user exist in the database
     const findOne = await User.findOne({ username: username });

@@ -13,35 +13,87 @@
   </head>
   <body>
     <div class="container">
-      <form action="/api/exercise/new-user" method="post">
-        <h3>Create new user</h3>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Username"
-        />
-        <input type="submit" value="Submit" />
-      </form>
-      <form action="/api/exercise/add" method="post">
-        <h3>Add exercises</h3>
-        <input type="text" name="userId" id="userId" placeholder="userId" />
-        <input
-          type="text"
-          name="description"
-          id="description"
-          placeholder="description"
-        />
-        <input
-          type="number"
-          name="duration"
-          id="duration"
-          min="0"
-          placeholder="duration"
-        />
-        <input type="date" name="date" id="date" placeholder="date" />
-        <input type="submit" value="Submit" />
-      </form>
+      <div class="form-wrapper">
+        <form action="/api/exercise/new-user" method="post">
+          <h3>Create new user</h3>
+          <label for="username">*Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Username"
+            required="required"
+          />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <div class="form-wrapper">
+        <h3>Get complete user list</h3>
+        <form action="api/exercise/users" method="get">
+          <input type="submit" value="Request" />
+        </form>
+      </div>
+
+      <div class="form-wrapper">
+        <form action="/api/exercise/add" method="post">
+          <h3>Add exercise</h3>
+          <label for="userId">*userId</label>
+          <input
+            type="text"
+            name="userId"
+            id="userId"
+            placeholder="userId"
+            required="required"
+          />
+          <label for="description">*description</label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            placeholder="description"
+            required="required"
+          />
+          <label for="duration">*duration</label>
+          <input
+            type="number"
+            name="duration"
+            id="duration"
+            min="0"
+            placeholder="duration"
+            required="required"
+          />
+          <label for="date">date</label>
+          <input type="date" name="date" id="date" />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+      <div class="form-wrapper">
+        <form action="/api/exercise/log" method="get">
+          <h3>Get complete log by userId</h3>
+          <label for="userId">*userId</label>
+          <input
+            type="text"
+            name="userId"
+            id="userId"
+            placeholder="userId"
+            required="required"
+          />
+          <label for="fromDate">From</label>
+          <input type="date" name="from" id="fromDate" />
+          <label for="toDate">To</label>
+          <input type="date" name="to" id="toDate" />
+          <label for="limit">Limit</label>
+          <input
+            type="number"
+            name="limit"
+            id="limit"
+            min="1"
+            placeholder="limit"
+          />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
     </div>
   </body>
 </html>
